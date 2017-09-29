@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 启动包扫描功能，将带有@Controller、@Service、@repository、@Component等注解的类
+    	自动转化为成为spring的bean -->
+    <context:component-scan
+            base-package="com.demo.service" />
+    <context:component-scan
+            base-package="com.demo.dao" />
+
+    <!-- 数据源配置的文件,引入spring容器 -->
+    <context:property-placeholder
+            location="classpath:database.properties" />
+
+    <!-- dataSource，配置构建基于DBCP的数据源 -->
+    <bean   id="dataSource"
+            class="org.apache.commons.dbcp.BasicDataSource"
+            destroy-method="close"
+            lazy-init="false"
+            p:driverClassName="${dataSource.driverClassName}"
+            p:url="${dataSource.url}"
+            p:username="${dataSource.username}"
+            p:password="${dataSource.password}"
+            p:maxActive="${dataSource.maxActive}"
+            p:maxIdle="${dataSource.maxIdle}"
+            p:maxWait="${dataSource.maxWait}" />
+
+    <!-- 定义jdbcTemplate模版的Bean-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource" />
+</beans>
+

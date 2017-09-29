@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan
+            base-package="com.demo.controller" />
+
+    <bean  id="urlMapping"
+            class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+
+    <bean  class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+    <!-- 对模型视图名称的解析，在请求时模型视图名称添加前后缀，将ModelAndView解析为具体页面 -->
+    <!-- 使用了JstlView作为视图解析器。同时，指定前缀路径为"/WEB-INF/jsp/"，后缀路径为".jsp
+    	Spring容器将会在这个路径中寻找匹配的jsp文件！ -->
+    <bean id="jstlViewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/views/"
+          p:suffix=".jsp" />
+</beans>
